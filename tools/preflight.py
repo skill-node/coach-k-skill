@@ -54,8 +54,12 @@ def fail(msg: str) -> None:
     problems.append(msg)
 
 
+SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "coaching-sessions"}
+
+
 def package_files() -> list[Path]:
-    return [p for p in SKILL_ROOT.rglob("*") if p.is_file()]
+    return [p for p in SKILL_ROOT.rglob("*")
+            if p.is_file() and not SKIP_DIRS & set(p.relative_to(SKILL_ROOT).parts)]
 
 
 # --- 1. 生成物是否最新 ------------------------------------------------------
@@ -105,11 +109,13 @@ def check_skill_md() -> None:
         fail("SKILL.md 开头缺少 --- frontmatter --- 块，宿主认不出这是个 skill")
         return
     fm = match.group(1)
+    # 注意：不比对目录名 —— clone 下来的目录叫什么都行，
+    # install.sh 会按 frontmatter 的 name 建软链。
     name_match = re.search(r"^name:\s*(\S+)\s*$", fm, re.M)
     if not name_match:
         fail("SKILL.md frontmatter 缺 name")
-    elif name_match.group(1) != SKILL_ROOT.name:
-        fail(f"SKILL.md 的 name={name_match.group(1)!r} 与目录名 {SKILL_ROOT.name!r} 不一致")
+    elif not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", name_match.group(1)):
+        fail(f"SKILL.md 的 name={name_match.group(1)!r} 不是合法的 kebab-case 标识")
     if not re.search(r"^description:", fm, re.M):
         fail("SKILL.md frontmatter 缺 description —— 宿主靠它决定何时触发")
     else:
