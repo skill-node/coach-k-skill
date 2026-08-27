@@ -76,7 +76,11 @@ ln -s "$(pwd)" ~/.agents/skills/coach-k
 
 ## 和 Web 版的关系
 
-本 skill 是 Coach K 的本地免费版本。登录、云端跨设备历史、订阅计费在 Web 版上。
+本 skill 是 Coach K 的本地免费版本。登录、云端跨设备历史、订阅计费在 Web 版上：
+
+**👉 https://coach.skillnode.ai**
+
+打开就能用，不用装任何东西，手机上也能聊。
 
 两边共享同一份教练方法论与案例库：本包 `references/` 和 `scenarios/` 里的
 markdown 就是唯一数据源，Web 版后端消费的是由 `tools/build.py` 从它们生成的产物。
