@@ -17,10 +17,28 @@
 ## 安装
 
 ```bash
-bash tools/install.sh
+npx skills add skill-node/coach-k-skill
 ```
 
-脚本会把这个目录软链到你装了的宿主对应位置（幂等，可重复运行）：
+一条命令装进你的 agent。技能走的是公开的 [Agent Skills](https://code.claude.com/docs/en/skills)
+格式 —— 一个 `SKILL.md` 加一段 YAML，不绑定任何一家。Claude Code、Codex、Cursor、OpenCode、
+WorkBuddy、千问办公等七十多个 runtime 读同一份格式，装一次，换个 agent 它还在。
+
+不想碰命令行，把 `https://github.com/skill-node/coach-k-skill` 发给你正在用的 agent，
+说一句「把这个技能装上」。它会自己读仓库，放进这台机器该放的位置 —— 各家 agent 的技能目录
+都不一样，这些不用你记。
+
+装完直接说需求，或者 `/coach-k`。卸载：`npx skills remove coach-k`。
+
+<details>
+<summary><b>你的 runtime 没有 <code>skills</code> 命令</b>，或者想从本地目录装</summary>
+
+克隆下来跑安装脚本，它把这个目录软链到你装了的宿主对应位置（幂等，可重复运行）：
+
+```bash
+git clone https://github.com/skill-node/coach-k-skill.git
+cd coach-k-skill && bash tools/install.sh
+```
 
 | 宿主 | 位置 | 调用方式 |
 |---|---|---|
@@ -28,7 +46,7 @@ bash tools/install.sh
 | Codex CLI | `~/.agents/skills/coach-k` | 直接说需求，或 `$coach-k` |
 | WorkBuddy | 在设置里导入本目录 | 技能列表中选择 |
 
-想手动装就是一句 `ln -s`：
+手动装就是一句 `ln -s`：
 
 ```bash
 ln -s "$(pwd)" ~/.claude/skills/coach-k
@@ -36,6 +54,8 @@ ln -s "$(pwd)" ~/.agents/skills/coach-k
 ```
 
 卸载：`bash tools/install.sh --uninstall`
+
+</details>
 
 ## 用起来
 
